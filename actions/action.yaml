@@ -1,0 +1,40 @@
+name: Build Terraform Plan
+description: "Publish Image to artifactory"
+
+inputs:
+  TF_PATH:
+    description: "Working directory with Terraform code"
+    default: .
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Set git config
+      shell: bash
+      run: git config user.name "${{ github.actor }}"
+
+    - name: Terraform Version
+      shell: bash
+      run: terraform version
+
+    - name: Init Terraform
+      working-directory: ${{ inputs.TF_PATH }} 
+      shell: bash
+      run: terraform init
+
+    - name: Create Plan
+      working-directory: ${{ inputs.TF_PATH }}
+      shell: bash
+      run: terraform plan -no-color -out=tfplan
+
+    - name: Print Plan Summary
+      working-directory: ${{ inputs.TF_PATH }}
+      shell: bash
+      run: | 
+        terraform show -json tfplan | jq -r '.resource_changes | map(.address as $k | .change | { action: .actions[0]}) | group_by(.action) | map({ (.[0].action): length }) | add | "Plan: \(.create // 0) to add, \(.update // 0) to change, \(.delete // 0) to destroy."' >> $GITHUB_STEP_SUMMARY
