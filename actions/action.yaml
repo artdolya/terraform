@@ -15,10 +15,6 @@ runs:
       with:
         terraform_wrapper: false
 
-    - name: Set git config
-      shell: bash
-      run: git config user.name "${{ github.actor }}"
-
     - name: Terraform Version
       shell: bash
       run: terraform version
