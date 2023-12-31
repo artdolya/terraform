@@ -1,6 +1,11 @@
 name: Build Terraform Plan
-description: "Publish Image to artifactory"
+author: Artem Dolya
+description: "Build Terraform Plan"
 
+branding: 
+  icon: "cloud"
+  color: "green"
+  
 inputs:
   TF_PATH:
     description: "Working directory with Terraform code"
