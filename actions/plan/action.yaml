@@ -19,6 +19,10 @@ runs:
       uses: hashicorp/setup-terraform@v3
       with:
         terraform_wrapper: false
+        
+    - name: Aws region
+      shell: bash
+      run: ${{ env.AWS_REGION }}
 
     - name: Terraform Version
       shell: bash
