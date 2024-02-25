@@ -11,6 +11,10 @@ inputs:
     description: "Working directory with Terraform code"
     default: .
     required: true
+  APPLY:
+    description: "apply"
+    required: false
+    default: 'false'
 
 runs:
   using: "composite"
@@ -26,9 +30,15 @@ runs:
       run: terraform init
 
     - name: Create Plan
+      if: ${{ inputs.APPLY == 'false' }}
       working-directory: ${{ inputs.TF_PATH }}
       shell: bash
       run: terraform plan -no-color -out=tfplan
+
+    - name: Terraform Apply
+      if: ${{ inputs.APPLY == 'true' }}
+      working-directory: ${{ inputs.TF_PATH }}
+      run: terraform apply --auto-approve
 
     - name: Print Plan Summary
       working-directory: ${{ inputs.TF_PATH }}
