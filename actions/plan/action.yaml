@@ -33,7 +33,7 @@ runs:
       if: ${{ inputs.APPLY == 'false' }}
       working-directory: ${{ inputs.TF_PATH }}
       shell: bash
-      run: terraform plan -no-color -out=tfplan
+      run: terraform plan -no-color -out=tfplan.json -json
 
     - name: Terraform Apply
       if: ${{ inputs.APPLY == 'true' }}
