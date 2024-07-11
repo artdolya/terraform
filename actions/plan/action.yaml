@@ -35,15 +35,15 @@ runs:
       shell: bash
       run: terraform plan -no-color -out=tfplan
 
-    - name: Terraform Apply
-      if: ${{ inputs.APPLY == 'true' }}
-      working-directory: ${{ inputs.TF_PATH }}
-      shell: bash
-      run: terraform apply --auto-approve
-
     - name: Print Plan Summary
       working-directory: ${{ inputs.TF_PATH }}
       continue-on-error: true
       shell: bash
       run: | 
         terraform show -json tfplan | jq -r '.resource_changes | map(.address as $k | .change | { action: .actions[0]}) | group_by(.action) | map({ (.[0].action): length }) | add | "Plan: \(.create // 0) to add, \(.update // 0) to change, \(.delete // 0) to destroy."' >> $GITHUB_STEP_SUMMARY
+
+    - name: Terraform Apply
+      if: ${{ inputs.APPLY == 'true' }}
+      working-directory: ${{ inputs.TF_PATH }}
+      shell: bash
+      run: terraform apply --auto-approve
