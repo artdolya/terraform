@@ -32,14 +32,8 @@ runs:
     - name: Create Plan
       working-directory: ${{ inputs.TF_PATH }}
       shell: bash
-      run: terraform plan -no-color -out=tfplan
-
-    - name: Print Plan Summary
-      working-directory: ${{ inputs.TF_PATH }}
-      if: ${{ hashFiles('tfplan') != '' }}
-      shell: bash
-      run: | 
-        terraform show -json tfplan | jq -r '.resource_changes | map(.address as $k | .change | { action: .actions[0]}) | group_by(.action) | map({ (.[0].action): length }) | add | "Plan: \(.create // 0) to add, \(.update // 0) to change, \(.delete // 0) to destroy."' >> $GITHUB_STEP_SUMMARY
+      run: |
+        terraform plan -out=tfplan && [ -f tfplan ] && terraform show -json tfplan | jq -r '.resource_changes | map(.address as $k | .change | { action: .actions[0]}) | group_by(.action) | map({ (.[0].action): length }) | add | "Plan: \(.create // 0) to add, \(.update // 0) to change, \(.delete // 0) to destroy."' >> $GITHUB_STEP_SUMMARY || echo "No changes detected, tfplan file not created." >> $GITHUB_STEP_SUMMARY
 
     - name: Terraform Apply
       if: ${{ inputs.APPLY == 'true' }}
