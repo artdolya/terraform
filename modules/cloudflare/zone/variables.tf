@@ -18,3 +18,9 @@ variable "email" {
     forwardings = {}
   }
 }
+
+variable "records" {
+  description = "DNS records to be created"
+  type        = map(map(list(string)))
+  default     = {}
+}
