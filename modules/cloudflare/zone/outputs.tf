@@ -28,7 +28,3 @@ output "email" {
     forwardings   = { for k, v in cloudflare_email_routing_rule.forwarding : "${k}@${var.domain_name}" => element(v.action[*].value, 0) }
   }
 }
-
-output "dns_records" {
-  value = local.flattened_dns_records
-}

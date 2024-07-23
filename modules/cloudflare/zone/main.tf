@@ -9,8 +9,8 @@ resource "cloudflare_email_routing_settings" "this" {
   enabled = "true"
 }
 
-locals {
-  flattened_dns_records = flatten([
+resource "cloudflare_record" "dns_records" {
+  for_each = { for record in flatten([
     for type, record_map in var.records : [
       for name, values in record_map : [
         for idx, value in values : {
@@ -21,17 +21,37 @@ locals {
         }
       ]
     ]
-  ])
-}
-
-resource "cloudflare_record" "dns_records" {
-  for_each = { for record in local.flattened_dns_records : record.id => record }
+    ]) : record.id => record
+  }
 
   zone_id = cloudflare_zone.this.id
   name    = each.value.name
   type    = each.value.type
   value   = each.value.value
-  ttl     = 3600
+  ttl     = 1
+}
+
+resource "cloudflare_record" "proxied_dns_records" {
+  for_each = { for record in flatten([
+    for type, record_map in var.proxied_records : [
+      for name, values in record_map : [
+        for idx, value in values : {
+          id    = "${type}-${name}-${idx}"
+          name  = name
+          type  = type
+          value = value
+        }
+      ]
+    ]
+    ]) : record.id => record
+  }
+
+  zone_id = cloudflare_zone.this.id
+  name    = each.value.name
+  type    = each.value.type
+  value   = each.value.value
+  proxied = true
+  ttl     = 1
 }
 
 resource "cloudflare_zone_settings_override" "this" {
