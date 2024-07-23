@@ -30,6 +30,14 @@ module "cloudflare_zone_dolya_net" {
     }
     ...
   }
+  proxied_records = {
+    AAA = {
+      aws = ["aws-ns1.example.com", "aws-ns2.example.com"]
+    }
+    TXT = {
+      txt1 = ["som.value"]
+    ...
+  }
 
   email = {
     catch_all = "my.email@example.com"
