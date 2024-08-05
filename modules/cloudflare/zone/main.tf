@@ -60,6 +60,6 @@ resource "cloudflare_zone_settings_override" "this" {
   settings {
     tls_1_3                  = "on"
     automatic_https_rewrites = "on"
-    ssl                      = "strict"
+    ssl                      = var.ssl_mode
   }
 }

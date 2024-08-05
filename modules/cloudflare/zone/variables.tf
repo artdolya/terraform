@@ -31,3 +31,9 @@ variable "proxied_records" {
   default     = {}
 }
 
+variable "ssl_mode" {
+  description = "Zone settings to be overridden"
+  type        = string
+  default     = "strict"
+}
+
