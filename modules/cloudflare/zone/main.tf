@@ -27,7 +27,7 @@ resource "cloudflare_record" "dns_records" {
   zone_id = cloudflare_zone.this.id
   name    = each.value.name
   type    = each.value.type
-  content = each.value.value
+  content = each.value.content
   ttl     = 1
 }
 
