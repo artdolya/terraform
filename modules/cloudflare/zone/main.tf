@@ -14,10 +14,10 @@ resource "cloudflare_record" "dns_records" {
     for type, record_map in var.records : [
       for name, values in record_map : [
         for idx, value in values : {
-          id    = "${type}-${name}-${idx}"
-          name  = name
-          type  = type
-          value = value
+          id      = "${type}-${name}-${idx}"
+          name    = name
+          type    = type
+          content = value
         }
       ]
     ]
@@ -27,7 +27,7 @@ resource "cloudflare_record" "dns_records" {
   zone_id = cloudflare_zone.this.id
   name    = each.value.name
   type    = each.value.type
-  value   = each.value.value
+  content = each.value.value
   ttl     = 1
 }
 

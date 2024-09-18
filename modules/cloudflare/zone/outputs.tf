@@ -8,12 +8,12 @@ output "zone" {
 output "records" {
   value = {
     mx = {
-      "mx_73" = length(cloudflare_record.mx_73) > 0 ? cloudflare_record.mx_73[0].value : null
-      "mx_58" = length(cloudflare_record.mx_58) > 0 ? cloudflare_record.mx_58[0].value : null
-      "mx_59" = length(cloudflare_record.mx_59) > 0 ? cloudflare_record.mx_59[0].value : null
+      "mx_73" = length(cloudflare_record.mx_73) > 0 ? cloudflare_record.mx_73[0].content : null
+      "mx_58" = length(cloudflare_record.mx_58) > 0 ? cloudflare_record.mx_58[0].content : null
+      "mx_59" = length(cloudflare_record.mx_59) > 0 ? cloudflare_record.mx_59[0].content : null
     }
     txt = {
-      "all" = length(cloudflare_record.txt_all) > 0 ? cloudflare_record.txt_all[0].value : null
+      "all" = length(cloudflare_record.txt_all) > 0 ? cloudflare_record.txt_all[0].content : null
     }
   }
 }
