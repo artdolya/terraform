@@ -3,7 +3,7 @@ resource "cloudflare_record" "mx_73" {
   zone_id  = cloudflare_zone.this.id
   type     = "MX"
   name     = var.domain_name
-  value    = "route1.mx.cloudflare.net"
+  content  = "route1.mx.cloudflare.net"
   priority = 73
   proxied  = false
 }
@@ -13,7 +13,7 @@ resource "cloudflare_record" "mx_58" {
   zone_id  = cloudflare_zone.this.id
   type     = "MX"
   name     = var.domain_name
-  value    = "route2.mx.cloudflare.net"
+  content  = "route2.mx.cloudflare.net"
   priority = 58
   proxied  = false
 }
@@ -23,7 +23,7 @@ resource "cloudflare_record" "mx_59" {
   zone_id  = cloudflare_zone.this.id
   type     = "MX"
   name     = var.domain_name
-  value    = "route3.mx.cloudflare.net"
+  content  = "route3.mx.cloudflare.net"
   priority = 59
   proxied  = false
 }
@@ -34,7 +34,7 @@ resource "cloudflare_record" "txt_all" {
   zone_id = cloudflare_zone.this.id
   type    = "TXT"
   name    = var.domain_name
-  value   = "v=spf1 include:_spf.mx.cloudflare.net ~all"
+  content = "v=spf1 include:_spf.mx.cloudflare.net ~all"
   proxied = false
 }
 
