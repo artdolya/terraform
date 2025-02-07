@@ -10,8 +10,9 @@ variable "account_id" {
 
 variable "email" {
   type = object({
-    catch_all   = string
-    forwardings = optional(map(string), {})
+    catch_all         = optional(string)
+    create_mx_records = optional(bool, true)
+    forwardings       = optional(map(string), {})
   })
   default = {
     catch_all   = ""
