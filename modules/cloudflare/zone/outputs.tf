@@ -17,3 +17,10 @@ output "records" {
     }
   }
 }
+
+output "email" {
+  value = {
+    default_email = var.email.catch_all
+    forwardings   = { for k, v in cloudflare_email_routing_rule.forwarding : "${k}@${var.domain_name}" => element(v.actions[*].value, 0) }
+  }
+}
