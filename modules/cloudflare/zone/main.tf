@@ -50,3 +50,20 @@ resource "cloudflare_dns_record" "proxied_dns_records" {
   ttl     = 1
 }
 
+resource "cloudflare_zone_setting" "example_zone_tls" {
+  zone_id    = cloudflare_zone.this.id
+  setting_id = "tls_1_3"
+  value      = "on"
+}
+
+resource "cloudflare_zone_setting" "example_zone_ssl" {
+  zone_id    = cloudflare_zone.this.id
+  setting_id = "ssl"
+  value      = "flexible"
+}
+
+resource "cloudflare_zone_setting" "example_zone_https" {
+  zone_id    = cloudflare_zone.this.id
+  setting_id = "automatic_https_rewrites"
+  value      = "on"
+}
