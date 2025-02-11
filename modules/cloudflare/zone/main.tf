@@ -49,7 +49,7 @@ resource "cloudflare_dns_record" "proxied_dns_records" {
   proxied = true
   ttl     = 1
 }
-a
+
 resource "cloudflare_zone_setting" "zone_tls" {
   zone_id    = cloudflare_zone.this.id
   setting_id = "tls_1_3"
