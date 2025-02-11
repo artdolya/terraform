@@ -59,7 +59,7 @@ resource "cloudflare_zone_setting" "example_zone_tls" {
 resource "cloudflare_zone_setting" "example_zone_ssl" {
   zone_id    = cloudflare_zone.this.id
   setting_id = "ssl"
-  value      = "flexible"
+  value      = var.ssl_mode
 }
 
 resource "cloudflare_zone_setting" "example_zone_https" {
