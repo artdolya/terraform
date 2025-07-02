@@ -1,7 +1,10 @@
 variable "env_vars" {
-  type        = string
-  description = "Environment variables to be set in the pod, in the format VAR1=VALUE1\nVAR2=VALUE2"
-  default     = ""
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  description = "Environment variables to be set in the pod, in the form of key=value"
+  default     = []
 }
 
 variable "namespace" {
@@ -32,9 +35,17 @@ variable "target_port" {
 variable "node_port" {
   type        = number
   description = "The node port to expose on the service"
+  default     = null
 }
 
 variable "cluster_domain" {
   type    = string
   default = "cluster.local"
 }
+
+variable "replica_count" {
+  type        = number
+  description = "The number of replicas to create"
+  default     = 1
+}
+

@@ -1,20 +1,13 @@
 locals {
   svc_name = "${var.name}-svc"
-  env_vars = [
-    for line in split("\n", var.env_vars) :
-    {
-      name  = split("=", line)[0]
-      value = join("=", slice(split("=", line), 1, length(split("=", line))))
-    }
-    if length(trimspace(line)) > 0 && can(split("=", line)[1])
-  ]
+
   labels = {
     app = var.name
   }
 }
 
 # Pod defines the image
-resource "kubernetes_pod" "this" {
+resource "kubernetes_deployment" "this" {
   metadata {
     name      = local.svc_name
     namespace = var.namespace
@@ -22,12 +15,34 @@ resource "kubernetes_pod" "this" {
   }
 
   spec {
-    container {
-      name  = var.name
-      image = var.image # <--- IMAGE is here
+    replicas = var.replica_count
 
-      port {
-        container_port = var.port
+    selector {
+      match_labels = local.labels
+    }
+
+    template {
+      metadata {
+        labels = local.labels
+      }
+
+      spec {
+        container {
+          name  = var.name
+          image = var.image
+
+          port {
+            container_port = var.port
+          }
+
+          dynamic "env" {
+            for_each = var.env_vars
+            content {
+              name  = env.value.name
+              value = env.value.value
+            }
+          }
+        }
       }
     }
   }
